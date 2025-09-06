@@ -242,29 +242,8 @@ class AIAnalyzer:
         """
         try:
             if not self.openai_client:
-                return {
-                    'hashtag_suggestions': ['#content', '#socialmedia', '#engagement', '#marketing', '#tips'],
-                    'content_improvements': [
-                        "Add relevant hashtags to increase discoverability",
-                        "Use more engaging language and active voice",
-                        "Break long paragraphs into shorter, digestible chunks",
-                        "Include specific examples and data points"
-                    ],
-                    'tone_suggestions': [
-                        "Use more conversational language",
-                        "Add personal touches to connect with audience"
-                    ],
-                    'cta_recommendations': [
-                        "Include a call-to-action to encourage interaction",
-                        "Ask questions to spark engagement"
-                    ],
-                    'visual_enhancements': [
-                        "Consider adding emojis to make content more visually appealing",
-                        "Use bullet points for better readability"
-                    ],
-                    'source': 'smart_suggestions',
-                    'note': 'Content analysis suggestions'
-                }
+                # Analyze the actual content to provide personalized suggestions
+                return self._analyze_content_for_suggestions(text)
             
             # Create prompt for engagement suggestions
             prompt = f"""
@@ -421,6 +400,131 @@ class AIAnalyzer:
                 'scores': {'NEUTRAL': 0.5, 'POSITIVE': 0.25, 'NEGATIVE': 0.25},
                 'interpretation': 'Neutral sentiment detected',
                 'method': 'fallback'
+            }
+    
+    def _analyze_content_for_suggestions(self, text):
+        """
+        Analyze content and provide personalized engagement suggestions
+        """
+        try:
+            text_lower = text.lower()
+            words = text.split()
+            sentences = text.split('.')
+            
+            # Analyze content characteristics
+            word_count = len(words)
+            sentence_count = len([s for s in sentences if s.strip()])
+            avg_sentence_length = word_count / max(sentence_count, 1)
+            
+            # Initialize suggestions
+            hashtag_suggestions = []
+            content_improvements = []
+            tone_suggestions = []
+            cta_recommendations = []
+            visual_enhancements = []
+            
+            # Content-specific hashtag suggestions
+            topic_keywords = {
+                'business': ['#business', '#entrepreneurship', '#startup', '#success'],
+                'technology': ['#tech', '#innovation', '#digital', '#future'],
+                'education': ['#learning', '#education', '#knowledge', '#growth'],
+                'health': ['#health', '#wellness', '#fitness', '#lifestyle'],
+                'marketing': ['#marketing', '#socialmedia', '#branding', '#content'],
+                'finance': ['#finance', '#money', '#investment', '#wealth'],
+                'travel': ['#travel', '#adventure', '#explore', '#wanderlust'],
+                'food': ['#food', '#recipe', '#cooking', '#foodie'],
+                'personal': ['#motivation', '#inspiration', '#mindset', '#goals']
+            }
+            
+            # Detect topics and suggest relevant hashtags
+            detected_topics = []
+            for topic, keywords in topic_keywords.items():
+                topic_words = ['business', 'company', 'startup', 'entrepreneur', 'market', 'strategy'] if topic == 'business' else \
+                             ['technology', 'tech', 'digital', 'software', 'app', 'innovation'] if topic == 'technology' else \
+                             ['learn', 'education', 'study', 'knowledge', 'skill', 'training'] if topic == 'education' else \
+                             ['health', 'fitness', 'wellness', 'exercise', 'nutrition', 'diet'] if topic == 'health' else \
+                             ['marketing', 'brand', 'promotion', 'advertising', 'social', 'content'] if topic == 'marketing' else \
+                             ['money', 'finance', 'investment', 'budget', 'profit', 'income'] if topic == 'finance' else \
+                             ['travel', 'trip', 'vacation', 'adventure', 'journey', 'destination'] if topic == 'travel' else \
+                             ['food', 'recipe', 'cooking', 'meal', 'ingredient', 'restaurant'] if topic == 'food' else \
+                             ['motivation', 'inspiration', 'goal', 'success', 'mindset', 'personal']
+                
+                if any(word in text_lower for word in topic_words):
+                    detected_topics.append(topic)
+                    hashtag_suggestions.extend(keywords[:2])  # Add first 2 hashtags for each detected topic
+            
+            # If no specific topics detected, use general hashtags
+            if not hashtag_suggestions:
+                hashtag_suggestions = ['#content', '#socialmedia', '#engagement', '#tips']
+            
+            # Content structure analysis
+            if avg_sentence_length > 25:
+                content_improvements.append("Break down long sentences for better readability")
+            if word_count < 50:
+                content_improvements.append("Expand content with more details and examples")
+            elif word_count > 500:
+                content_improvements.append("Consider breaking content into multiple posts or add subheadings")
+            if not any(char in text for char in '.!?'):
+                content_improvements.append("Add punctuation to improve text flow")
+            if text.count('\n') == 0:
+                content_improvements.append("Use paragraph breaks to improve visual structure")
+            
+            # Tone analysis
+            if not any(word in text_lower for word in ['you', 'your', 'we', 'our', 'us']):
+                tone_suggestions.append("Use more personal pronouns to connect with your audience")
+            if text.count('!') == 0:
+                tone_suggestions.append("Add enthusiasm with strategic use of exclamation marks")
+            if not any(word in text_lower for word in ['exciting', 'amazing', 'great', 'fantastic', 'wonderful']):
+                tone_suggestions.append("Include more engaging adjectives to create excitement")
+            
+            # Call-to-action analysis
+            if not any(phrase in text_lower for phrase in ['what do you think', 'share', 'comment', 'tell us', 'let me know']):
+                cta_recommendations.append("Ask a specific question to encourage comments")
+            if not any(phrase in text_lower for phrase in ['click', 'link', 'visit', 'read more', 'learn more']):
+                cta_recommendations.append("Include a clear call-to-action for next steps")
+            if not any(phrase in text_lower for phrase in ['tag', 'share', 'repost']):
+                cta_recommendations.append("Encourage sharing by asking readers to tag friends")
+            
+            # Visual enhancements
+            if text.count('•') == 0 and text.count('-') < 2:
+                visual_enhancements.append("Use bullet points or lists to organize information")
+            if len([c for c in text if c.isupper()]) / len(text) < 0.02:
+                visual_enhancements.append("Use strategic capitalization for emphasis")
+            if not any(emoji_char in text for emoji_char in ['😀', '😊', '👍', '💪', '🔥', '✨']):
+                visual_enhancements.append("Consider adding 1-2 relevant emojis to increase engagement")
+            
+            # Ensure we have at least some suggestions for each category
+            if not content_improvements:
+                content_improvements.append("Your content structure looks good - consider adding more specific examples")
+            if not tone_suggestions:
+                tone_suggestions.append("Your tone is appropriate - maintain this engaging style")
+            if not cta_recommendations:
+                cta_recommendations.append("Great content - consider adding a discussion starter")
+            if not visual_enhancements:
+                visual_enhancements.append("Your formatting looks clean - well done!")
+            
+            return {
+                'hashtag_suggestions': list(set(hashtag_suggestions))[:5],  # Remove duplicates, limit to 5
+                'content_improvements': content_improvements[:3],  # Limit to 3 most important
+                'tone_suggestions': tone_suggestions[:3],
+                'cta_recommendations': cta_recommendations[:3], 
+                'visual_enhancements': visual_enhancements[:3],
+                'source': 'content_analysis',
+                'note': f'Personalized suggestions based on your {word_count}-word content',
+                'detected_topics': detected_topics
+            }
+            
+        except Exception as e:
+            logger.error(f"Content analysis error: {str(e)}")
+            # Fallback to basic suggestions
+            return {
+                'hashtag_suggestions': ['#content', '#socialmedia', '#engagement'],
+                'content_improvements': ['Consider expanding your content with more details'],
+                'tone_suggestions': ['Maintain an engaging, conversational tone'],
+                'cta_recommendations': ['Add a question to encourage reader interaction'],
+                'visual_enhancements': ['Use formatting to improve readability'],
+                'source': 'fallback_analysis',
+                'note': 'Basic suggestions due to analysis error'
             }
     
     def _interpret_sentiment(self, label, confidence):
