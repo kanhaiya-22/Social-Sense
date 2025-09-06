@@ -9,7 +9,14 @@ dependencies = [
     "flask-sqlalchemy>=3.1.1",
     "gunicorn>=23.0.0",
     "openai>=1.106.1",
+    "pillow",
     "psycopg2-binary>=2.9.10",
+    "pymupdf",
+    "pytesseract",
+    "textstat",
+    "torch",
+    "torchvision",
+    "transformers",
 ]
 
 [[tool.uv.index]]
