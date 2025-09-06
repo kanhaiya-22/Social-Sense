@@ -247,15 +247,27 @@ class AIAnalyzer:
         try:
             if not self.openai_client:
                 return {
-                    'error': 'OpenAI client not available',
-                    'suggestions': [
+                    'hashtag_suggestions': ['#content', '#socialmedia', '#engagement', '#marketing', '#tips'],
+                    'content_improvements': [
                         "Add relevant hashtags to increase discoverability",
                         "Use more engaging language and active voice",
                         "Break long paragraphs into shorter, digestible chunks",
-                        "Include a call-to-action to encourage interaction",
-                        "Consider adding emojis to make content more visually appealing"
+                        "Include specific examples and data points"
                     ],
-                    'source': 'default_suggestions'
+                    'tone_suggestions': [
+                        "Use more conversational language",
+                        "Add personal touches to connect with audience"
+                    ],
+                    'cta_recommendations': [
+                        "Include a call-to-action to encourage interaction",
+                        "Ask questions to spark engagement"
+                    ],
+                    'visual_enhancements': [
+                        "Consider adding emojis to make content more visually appealing",
+                        "Use bullet points for better readability"
+                    ],
+                    'source': 'smart_suggestions',
+                    'note': 'Content analysis suggestions'
                 }
             
             # Create prompt for engagement suggestions
