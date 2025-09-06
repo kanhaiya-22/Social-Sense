@@ -186,12 +186,19 @@ class AIAnalyzer:
                     'error': 'Text too short for readability analysis',
                     'flesch_kincaid_grade': 0,
                     'flesch_reading_ease': 0,
+                    'coleman_liau_index': 0,
+                    'automated_readability_index': 0,
+                    'gunning_fog': 0,
+                    'avg_sentence_length': 0,
+                    'avg_syllables_per_word': 0,
+                    'word_count': 0,
+                    'sentence_count': 0,
                     'interpretation': 'Insufficient text'
                 }
             
             # Calculate various readability metrics
             metrics = {
-                'flesch_kincaid_grade': textstat.flesch_kincaid().grade_level(text),
+                'flesch_kincaid_grade': textstat.flesch_kincaid_grade(text),
                 'flesch_reading_ease': textstat.flesch_reading_ease(text),
                 'coleman_liau_index': textstat.coleman_liau_index(text),
                 'automated_readability_index': textstat.automated_readability_index(text),
@@ -216,7 +223,15 @@ class AIAnalyzer:
             return {
                 'error': f'Readability analysis failed: {str(e)}',
                 'flesch_kincaid_grade': 0,
-                'flesch_reading_ease': 0
+                'flesch_reading_ease': 0,
+                'coleman_liau_index': 0,
+                'automated_readability_index': 0,
+                'gunning_fog': 0,
+                'avg_sentence_length': 0,
+                'avg_syllables_per_word': 0,
+                'word_count': 0,
+                'sentence_count': 0,
+                'interpretation': 'Analysis failed'
             }
     
     def generate_engagement_suggestions(self, text):
