@@ -1,25 +1,64 @@
 /* Custom styles for Social Media Content Analyzer */
 
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-glow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
 /* Feature cards */
 .feature-card {
     padding: 2rem 1rem;
-    transition: transform 0.3s ease;
-    border-radius: 0.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-gradient);
+    opacity: 0;
+    transition: all 0.6s ease;
+    z-index: -1;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.feature-card:hover::before {
+    left: 0;
+    opacity: 0.1;
 }
 
 /* Step cards for how it works section */
 .step-card {
     padding: 1.5rem;
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
 }
 
 .step-number {
-    width: 60px;
-    height: 60px;
-    background: var(--bs-info);
+    width: 70px;
+    height: 70px;
+    background: var(--primary-gradient);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -28,29 +67,71 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    position: relative;
+}
+
+.step-number::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.7;
 }
 
 /* Drop zone styles */
 .drop-zone {
     position: relative;
-    border: 2px dashed var(--bs-border-color);
-    border-radius: 0.75rem;
+    border: 2px dashed rgba(102, 126, 234, 0.3);
+    border-radius: 1.5rem;
     padding: 3rem 2rem;
     text-align: center;
-    transition: all 0.3s ease;
-    background: var(--bs-body-bg);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.drop-zone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
 
 .drop-zone:hover {
-    border-color: var(--bs-info);
-    background: rgba(var(--bs-info-rgb), 0.05);
+    border-color: rgba(102, 126, 234, 0.8);
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.drop-zone:hover::before {
+    opacity: 0.05;
 }
 
 .drop-zone.drag-over {
-    border-color: var(--bs-info);
-    background: rgba(var(--bs-info-rgb), 0.1);
+    border-color: rgba(102, 126, 234, 1);
     border-style: solid;
+    transform: scale(1.05);
+    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+}
+
+.drop-zone.drag-over::before {
+    opacity: 0.1;
 }
 
 .drop-zone-content {
@@ -64,19 +145,27 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(var(--bs-info-rgb), 0.9);
+    background: var(--primary-gradient);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.75rem;
+    border-radius: 1.5rem;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .drop-zone.drag-over .drag-overlay {
-    opacity: 1;
+    opacity: 0.95;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
 
 /* File info display */
@@ -159,12 +248,60 @@
 
 /* Animation utilities */
 .fade-in {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Glowing text effect */
+.glow-text {
+    text-shadow: var(--text-glow);
+}
+
+/* Gradient buttons */
+.btn-gradient {
+    background: var(--primary-gradient);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.btn-gradient:hover::before {
+    left: 0;
+}
+
+/* Card improvements */
+.card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom scrollbar for extracted text */
