@@ -277,7 +277,10 @@ class AIAnalyzer:
             )
             
             # Parse the response
-            suggestions_json = json.loads(response.choices[0].message.content)
+            content = response.choices[0].message.content
+            if content is None:
+                raise ValueError("OpenAI response content is None")
+            suggestions_json = json.loads(content)
             
             # Add metadata
             suggestions_json['source'] = 'openai_gpt5'
