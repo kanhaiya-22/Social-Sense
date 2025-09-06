@@ -9,14 +9,15 @@ dependencies = [
     "flask-sqlalchemy>=3.1.1",
     "gunicorn>=23.0.0",
     "openai>=1.106.1",
-    "pillow",
+    "pillow>=9.0.0",
     "psycopg2-binary>=2.9.10",
-    "pymupdf",
-    "pytesseract",
-    "textstat",
-    "torch",
-    "torchvision",
+    "pymupdf>=1.23.0",
+    "pytesseract>=0.3.10",
+    "textstat>=0.7.0",
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
     "transformers",
+    "werkzeug>=3.1.3",
 ]
 
 [[tool.uv.index]]
@@ -979,7 +980,6 @@ tmnt = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 toad = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 tomesd = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 top2vec = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
-torch = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torch-audiomentations = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torch-dct = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torch-delaunay = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
@@ -1056,7 +1056,6 @@ torchtnt-nightly = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux
 torchtyping = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torchutil = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torchvinecopulib = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
-torchvision = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torchviz = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torchx = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 torchx-nightly = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
@@ -1067,7 +1066,6 @@ trainer = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transformer-engine = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transformer-lens = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transformer-smaller-training-vocab = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
-transformers = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transformers-domain-adaptation = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transfusion-pytorch = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 transparent-background = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
@@ -1140,3 +1138,6 @@ yta-general-utils = [{ index = "pytorch-cpu", marker = "platform_system == 'Linu
 zensvi = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 zetascale = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
 zuko = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
+torch = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
+torchvision = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
+transformers = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]

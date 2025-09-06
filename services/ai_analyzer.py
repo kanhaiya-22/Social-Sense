@@ -1,7 +1,12 @@
 import os
 import json
 import logging
-from transformers import pipeline
+try:
+    from transformers import pipeline
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+    pipeline = None
 import textstat
 from openai import OpenAI
 
@@ -16,6 +21,11 @@ class AIAnalyzer:
     
     def setup_sentiment_analyzer(self):
         """Initialize HuggingFace sentiment analysis pipeline"""
+        if not TRANSFORMERS_AVAILABLE:
+            logger.warning("Transformers library not available, sentiment analysis disabled")
+            self.sentiment_analyzer = None
+            return
+            
         try:
             self.sentiment_analyzer = pipeline(
                 "sentiment-analysis",
