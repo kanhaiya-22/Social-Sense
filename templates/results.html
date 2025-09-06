@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Social Media Content Analyzer</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h1 class="display-5 mb-1">
+                            <i class="fas fa-chart-line text-info me-2"></i>
+                            Analysis Results
+                        </h1>
+                        <p class="text-muted">
+                            <i class="fas fa-file me-1"></i>
+                            {{ data.original_filename }}
+                        </p>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-info">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            New Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if data.analysis and not data.analysis.get('error') %}
+        
+        <!-- Summary Cards -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-3">
+                <div class="card bg-transparent border">
+                    <div class="card-body text-center">
+                        <i class="fas fa-align-left fa-2x text-info mb-2"></i>
+                        <h5 class="card-title">Word Count</h5>
+                        <h3 class="text-info">{{ data.analysis.word_count }}</h3>
+                        <small class="text-muted">{{ data.analysis.text_length }} characters</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card bg-transparent border">
+                    <div class="card-body text-center">
+                        <i class="fas fa-heart fa-2x 
+                        {% if data.analysis.sentiment.label == 'POSITIVE' %}text-success{% elif data.analysis.sentiment.label == 'NEGATIVE' %}text-danger{% else %}text-warning{% endif %} mb-2"></i>
+                        <h5 class="card-title">Sentiment</h5>
+                        <h4 class="
+                        {% if data.analysis.sentiment.label == 'POSITIVE' %}text-success{% elif data.analysis.sentiment.label == 'NEGATIVE' %}text-danger{% else %}text-warning{% endif %}">
+                            {{ data.analysis.sentiment.label }}
+                        </h4>
+                        <small class="text-muted">{{ "%.1f"|format(data.analysis.sentiment.confidence * 100) }}% confidence</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card bg-transparent border">
+                    <div class="card-body text-center">
+                        <i class="fas fa-graduation-cap fa-2x text-info mb-2"></i>
+                        <h5 class="card-title">Reading Level</h5>
+                        <h3 class="text-info">{{ "%.1f"|format(data.analysis.readability.flesch_kincaid_grade) }}</h3>
+                        <small class="text-muted">Grade level</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card bg-transparent border">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tachometer-alt fa-2x text-info mb-2"></i>
+                        <h5 class="card-title">Readability</h5>
+                        <h3 class="text-info">{{ "%.0f"|format(data.analysis.readability.flesch_reading_ease) }}</h3>
+                        <small class="text-muted">Flesch score</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="row">
+            <!-- Left Column - Text & Sentiment -->
+            <div class="col-lg-6 mb-4">
+                <!-- Extracted Text -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-text me-2"></i>
+                            Extracted Text
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="extracted-text-container" style="max-height: 300px; overflow-y: auto;">
+                            <p class="mb-0">{{ data.extracted_text }}</p>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-outline-info" onclick="copyToClipboard('{{ data.extracted_text|replace("'", "\\'") }}')">
+                                <i class="fas fa-copy me-1"></i>
+                                Copy Text
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentiment Analysis -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-heart me-2"></i>
+                            Sentiment Analysis
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Overall Sentiment: 
+                                <span class="badge 
+                                {% if data.analysis.sentiment.label == 'POSITIVE' %}bg-success{% elif data.analysis.sentiment.label == 'NEGATIVE' %}bg-danger{% else %}bg-warning{% endif %}">
+                                    {{ data.analysis.sentiment.label }}
+                                </span>
+                            </h6>
+                            <p class="text-muted">{{ data.analysis.sentiment.interpretation }}</p>
+                        </div>
+                        
+                        {% if data.analysis.sentiment.scores %}
+                        <div class="sentiment-scores">
+                            <h6>Detailed Scores:</h6>
+                            {% for label, score in data.analysis.sentiment.scores.items() %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>{{ label }}</span>
+                                <span class="text-muted">{{ "%.1f"|format(score * 100) }}%</span>
+                            </div>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ score * 100 }}%"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Readability & Suggestions -->
+            <div class="col-lg-6 mb-4">
+                <!-- Readability Analysis -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-book me-2"></i>
+                            Readability Analysis
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <p class="text-muted">{{ data.analysis.readability.interpretation }}</p>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="text-center p-2 border rounded mb-2">
+                                    <small class="text-muted d-block">Flesch-Kincaid Grade</small>
+                                    <strong>{{ "%.1f"|format(data.analysis.readability.flesch_kincaid_grade) }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 border rounded mb-2">
+                                    <small class="text-muted d-block">Reading Ease</small>
+                                    <strong>{{ "%.0f"|format(data.analysis.readability.flesch_reading_ease) }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 border rounded mb-2">
+                                    <small class="text-muted d-block">Avg Sentence Length</small>
+                                    <strong>{{ "%.1f"|format(data.analysis.readability.avg_sentence_length) }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 border rounded">
+                                    <small class="text-muted d-block">Sentences</small>
+                                    <strong>{{ data.analysis.readability.sentence_count }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engagement Suggestions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Engagement Suggestions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if data.analysis.engagement_suggestions.error %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ data.analysis.engagement_suggestions.error }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if data.analysis.engagement_suggestions.hashtag_suggestions %}
+                        <div class="mb-4">
+                            <h6><i class="fas fa-hashtag me-2"></i>Suggested Hashtags</h6>
+                            <div class="hashtag-container">
+                                {% for hashtag in data.analysis.engagement_suggestions.hashtag_suggestions %}
+                                <span class="badge bg-info me-1 mb-1">{{ hashtag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if data.analysis.engagement_suggestions.priority_improvements %}
+                        <div class="mb-4">
+                            <h6><i class="fas fa-star me-2"></i>Priority Improvements</h6>
+                            <ul class="list-unstyled">
+                                {% for improvement in data.analysis.engagement_suggestions.priority_improvements %}
+                                <li class="mb-2">
+                                    <i class="fas fa-arrow-right text-info me-2"></i>
+                                    {{ improvement }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        {% if data.analysis.engagement_suggestions.content_improvements %}
+                        <div class="mb-3">
+                            <h6><i class="fas fa-edit me-2"></i>Content Improvements</h6>
+                            <ul class="list-unstyled">
+                                {% for improvement in data.analysis.engagement_suggestions.content_improvements %}
+                                <li class="mb-1">
+                                    <small><i class="fas fa-check text-success me-2"></i>{{ improvement }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        {% if data.analysis.engagement_suggestions.cta_recommendations %}
+                        <div class="mb-3">
+                            <h6><i class="fas fa-bullhorn me-2"></i>Call-to-Action Ideas</h6>
+                            <ul class="list-unstyled">
+                                {% for cta in data.analysis.engagement_suggestions.cta_recommendations %}
+                                <li class="mb-1">
+                                    <small><i class="fas fa-quote-left text-muted me-2"></i>{{ cta }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- Error Display -->
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Analysis Error:</strong> 
+                    {{ data.analysis.error if data.analysis else "No analysis data available" }}
+                </div>
+                <div class="text-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Try Again
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <footer class="text-center mt-5 pt-4 border-top">
+            <p class="text-muted">
+                <i class="fas fa-robot me-1"></i>
+                Analysis completed at {{ data.analysis.analysis_timestamp if data.analysis else "N/A" }}
+            </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show success feedback
+                const btn = event.target.closest('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+                btn.classList.remove('btn-outline-info');
+                btn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-info');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

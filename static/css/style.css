@@ -1,0 +1,225 @@
+/* Custom styles for Social Media Content Analyzer */
+
+/* Feature cards */
+.feature-card {
+    padding: 2rem 1rem;
+    transition: transform 0.3s ease;
+    border-radius: 0.5rem;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Step cards for how it works section */
+.step-card {
+    padding: 1.5rem;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--bs-info);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+/* Drop zone styles */
+.drop-zone {
+    position: relative;
+    border: 2px dashed var(--bs-border-color);
+    border-radius: 0.75rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: var(--bs-body-bg);
+    cursor: pointer;
+}
+
+.drop-zone:hover {
+    border-color: var(--bs-info);
+    background: rgba(var(--bs-info-rgb), 0.05);
+}
+
+.drop-zone.drag-over {
+    border-color: var(--bs-info);
+    background: rgba(var(--bs-info-rgb), 0.1);
+    border-style: solid;
+}
+
+.drop-zone-content {
+    position: relative;
+    z-index: 2;
+}
+
+.drag-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(var(--bs-info-rgb), 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.drop-zone.drag-over .drag-overlay {
+    opacity: 1;
+}
+
+/* File info display */
+.file-info {
+    padding: 1rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    background: var(--bs-gray-100);
+    margin-top: 1rem;
+}
+
+[data-bs-theme="dark"] .file-info {
+    background: var(--bs-gray-800);
+}
+
+/* Processing status */
+.processing-status {
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(var(--bs-info-rgb), 0.05);
+    border-radius: 0.75rem;
+    margin-top: 2rem;
+}
+
+/* Results page styles */
+.extracted-text-container {
+    background: var(--bs-gray-100);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+[data-bs-theme="dark"] .extracted-text-container {
+    background: var(--bs-gray-800);
+    color: var(--bs-gray-200);
+}
+
+.hashtag-container .badge {
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.hashtag-container .badge:hover {
+    transform: scale(1.05);
+}
+
+/* Sentiment scores progress bars */
+.sentiment-scores .progress-bar {
+    background-color: var(--bs-info);
+    transition: width 0.8s ease;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .drop-zone {
+        padding: 2rem 1rem;
+    }
+    
+    .feature-card, .step-card {
+        padding: 1rem;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Animation utilities */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom scrollbar for extracted text */
+.extracted-text-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.extracted-text-container::-webkit-scrollbar-track {
+    background: var(--bs-gray-200);
+    border-radius: 4px;
+}
+
+.extracted-text-container::-webkit-scrollbar-thumb {
+    background: var(--bs-gray-400);
+    border-radius: 4px;
+}
+
+.extracted-text-container::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-gray-500);
+}
+
+[data-bs-theme="dark"] .extracted-text-container::-webkit-scrollbar-track {
+    background: var(--bs-gray-700);
+}
+
+[data-bs-theme="dark"] .extracted-text-container::-webkit-scrollbar-thumb {
+    background: var(--bs-gray-600);
+}
+
+[data-bs-theme="dark"] .extracted-text-container::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-gray-500);
+}
+
+/* Loading animation for analysis button */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
