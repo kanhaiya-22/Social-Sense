@@ -104,12 +104,8 @@ class AIAnalyzer:
         """
         try:
             if not self.sentiment_analyzer:
-                return {
-                    'error': 'Sentiment analyzer not available',
-                    'label': 'UNKNOWN',
-                    'confidence': 0.0,
-                    'scores': {}
-                }
+                # Use basic sentiment analysis as fallback
+                return self._basic_sentiment_analysis(text)
             
             # Truncate text if too long for the model
             max_length = 512
@@ -355,6 +351,76 @@ class AIAnalyzer:
                 ],
                 'source': 'smart_suggestions',
                 'note': 'AI-powered suggestions based on content analysis'
+            }
+    
+    def _basic_sentiment_analysis(self, text):
+        """
+        Basic sentiment analysis using keyword matching as fallback
+        """
+        try:
+            text_lower = text.lower()
+            
+            # Define sentiment keywords
+            positive_words = [
+                'good', 'great', 'excellent', 'amazing', 'fantastic', 'wonderful', 'awesome', 
+                'love', 'like', 'enjoy', 'happy', 'pleased', 'satisfied', 'perfect', 
+                'brilliant', 'outstanding', 'superb', 'impressive', 'remarkable',
+                'best', 'better', 'success', 'successful', 'win', 'victory',
+                'beautiful', 'nice', 'lovely', 'delightful', 'charming', 'pleasant'
+            ]
+            
+            negative_words = [
+                'bad', 'terrible', 'awful', 'horrible', 'worst', 'hate', 'dislike',
+                'angry', 'sad', 'disappointed', 'frustrated', 'annoyed', 'upset',
+                'fail', 'failure', 'problem', 'issue', 'wrong', 'error', 'mistake',
+                'difficult', 'hard', 'challenging', 'struggle', 'pain', 'hurt',
+                'ugly', 'disgusting', 'boring', 'dull', 'poor', 'weak'
+            ]
+            
+            # Count sentiment words
+            positive_count = sum(1 for word in positive_words if word in text_lower)
+            negative_count = sum(1 for word in negative_words if word in text_lower)
+            total_words = len(text.split())
+            
+            # Calculate sentiment
+            if positive_count > negative_count:
+                label = 'POSITIVE'
+                confidence = min(0.9, 0.6 + (positive_count - negative_count) * 0.1)
+            elif negative_count > positive_count:
+                label = 'NEGATIVE'
+                confidence = min(0.9, 0.6 + (negative_count - positive_count) * 0.1)
+            else:
+                label = 'NEUTRAL'
+                confidence = 0.7
+            
+            # Adjust confidence based on text length
+            if total_words < 10:
+                confidence *= 0.8  # Lower confidence for very short text
+            elif total_words > 100:
+                confidence = min(confidence * 1.1, 0.95)  # Higher confidence for longer text
+            
+            scores = {
+                'POSITIVE': confidence if label == 'POSITIVE' else (1 - confidence) / 2,
+                'NEGATIVE': confidence if label == 'NEGATIVE' else (1 - confidence) / 2,
+                'NEUTRAL': confidence if label == 'NEUTRAL' else 1 - confidence
+            }
+            
+            return {
+                'label': label,
+                'confidence': confidence,
+                'scores': scores,
+                'interpretation': self._interpret_sentiment(label, confidence),
+                'method': 'basic_analysis'
+            }
+            
+        except Exception as e:
+            logger.error(f"Basic sentiment analysis error: {str(e)}")
+            return {
+                'label': 'NEUTRAL',
+                'confidence': 0.5,
+                'scores': {'NEUTRAL': 0.5, 'POSITIVE': 0.25, 'NEGATIVE': 0.25},
+                'interpretation': 'Neutral sentiment detected',
+                'method': 'fallback'
             }
     
     def _interpret_sentiment(self, label, confidence):
