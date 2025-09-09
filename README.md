@@ -1,53 +1,302 @@
-# Social Media Content Analyzer
+# 🚀 Social Media Content Analyzer
 
-A Flask-based web application that extracts text from PDF documents and images, then provides AI-powered sentiment analysis, readability scores, and engagement suggestions to help optimize social media content.
+*A Flask-based web app that extracts text from PDFs & images, runs AI-powered sentiment + readability analysis, and suggests engaging social copy.*
 
-## Features
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Inter&size=22&duration=2800&pause=900&center=true&vCenter=true&multiline=true&width=750&height=70&lines=Turn+raw+documents+into+ready-to-post+captions.;Sentiment.+Readability.+Engagement+tips.+Live." alt="animated typing">
+</p>
+
+<p align="center">
+  <a href="https://img.shields.io/badge/Python-3.8%2B-blue"> <img src="https://img.shields.io/badge/Python-3.8%2B-blue"/></a>
+  <a href="https://img.shields.io/badge/Flask-2.x-000"> <img src="https://img.shields.io/badge/Flask-2.x-000"/></a>
+  <a href="https://img.shields.io/badge/License-MIT-success"> <img src="https://img.shields.io/badge/License-MIT-success"/></a>
+  <a href="https://img.shields.io/badge/Transformers-HF-orange"> <img src="https://img.shields.io/badge/Transformers-HF-orange"/></a>
+  <a href="https://img.shields.io/badge/Textstat-Readability-9cf"> <img src="https://img.shields.io/badge/Textstat-Readability-9cf"/></a>
+  <a href="https://img.shields.io/badge/OpenAI-Engagement%20Tips-4B9"> <img src="https://img.shields.io/badge/OpenAI-Engagement%20Tips-4B9"/></a>
+</p>
+
+
+
+<p align="center">
+  <img src="static/assets/demo.gif" width="820" alt="Demo: Upload → Analyze → Post"/>
+</p>
+
+---
+
+## ✨ Features
 
 ### 📁 File Processing
-- **PDF Text Extraction**: Extract text from PDF documents using PyMuPDF
-- **OCR Image Processing**: Extract text from images (PNG, JPG, JPEG) using Tesseract OCR
-- **Drag & Drop Upload**: Modern file upload interface with drag-and-drop support
-- **File Validation**: Comprehensive validation for file types, sizes, and content
+
+* **PDF Text Extraction** via **PyMuPDF**
+* **OCR for Images** (PNG/JPG/JPEG) using **Tesseract** + **Pillow**
+* **Drag & Drop Upload** with progress feedback
+* **Strict Validation** for file types, sizes, and content
 
 ### 🤖 AI-Powered Analysis
-- **Sentiment Analysis**: Detect emotional tone using HuggingFace transformers
-- **Readability Scoring**: Calculate readability metrics using textstat
-- **Engagement Suggestions**: Get AI-powered recommendations using OpenAI GPT-5
-- **Real-time Processing**: Live feedback during analysis
+
+* **Sentiment Analysis** using **Hugging Face Transformers**
+* **Readability Scores** via **textstat** (Flesch, SMOG, Gunning Fog, etc.)
+* **Engagement Suggestions** via **OpenAI** (GPT‑5 or compatible)
+* **Real-time Status** with streaming UI updates
 
 ### 🎨 Modern Web Interface
-- **Responsive Design**: Bootstrap-based dark theme optimized for all devices
-- **Interactive Dashboard**: Clean, intuitive interface with visual feedback
-- **Results Visualization**: Comprehensive display of analysis results
-- **Error Handling**: Graceful error handling with helpful user messages
 
-## Technology Stack
+* **Responsive, Dark Theme** (Bootstrap 5)
+* **Interactive Dashboard** with clean semantic sections
+* **Results Visualization** (Chart.js-ready)
+* **Graceful Error Handling** and actionable messages
 
-### Backend
-- **Flask**: Python web framework
-- **PyMuPDF**: PDF text extraction
-- **pytesseract + Pillow**: OCR image processing
-- **transformers**: HuggingFace sentiment analysis
-- **textstat**: Readability metrics
-- **OpenAI**: AI-powered engagement suggestions
+---
 
-### Frontend
-- **Bootstrap 5**: UI framework with dark theme
-- **Vanilla JavaScript**: Interactive file upload
-- **Font Awesome**: Icons
-- **Chart.js**: Data visualization (ready for future enhancements)
 
-## Installation & Setup
+## 🏗 Architecture
+
+```mermaid
+flowchart LR
+  A[PDF/Image Upload] --> B{File Type?}
+  B -- PDF --> C[PyMuPDF Extractor]
+  B -- Image --> D[Tesseract OCR]
+  C --> E[Text Normalizer]
+  D --> E
+  E --> F[HuggingFace Sentiment]
+  E --> G[textstat Readability]
+  E --> H[OpenAI Engagement Tips]
+  F --> I[Results Aggregator]
+  G --> I
+  H --> I
+  I --> J[JSON Response]
+  J --> K[Bootstrap Dashboard + Charts]
+```
+
+---
+
+## ⚡ Quick Start
+
+```bash
+# Clone
+git clone https://github.com/your-username/social-media-content-analyzer.git
+cd social-media-content-analyzer
+
+# Create & activate venv
+python -m venv .venv
+# Windows
+.venv\\Scripts\\activate
+# macOS/Linux
+source .venv/bin/activate
+
+# Install
+pip install -r requirements.txt
+```
+
+> **Tesseract OCR** is required. See [Installation](#-installation) for OS-specific commands.
+
+---
+
+## 🛠 Installation
 
 ### Prerequisites
-- Python 3.8 or higher
-- Tesseract OCR installed on system
-- OpenAI API key (optional, for engagement suggestions)
 
-### Environment Variables
-Create a `.env` file or set these environment variables:
+* Python **3.8+**
+* **Tesseract OCR** installed on system
+* **OpenAI API key** (optional, for engagement suggestions)
+
+
+## 🔐 Environment Variables
+
+Create a `.env` file in the project root:
 
 ```bash
 SESSION_SECRET=your-session-secret-key
 OPENAI_API_KEY=your-openai-api-key  # Optional
+# Optional: Model choices / timeouts
+# OPENAI_MODEL=gpt-5
+# HF_MODEL=cardiffnlp/twitter-roberta-base-sentiment
+# MAX_UPLOAD_MB=25
+```
+
+> **No OpenAI key?** The app still runs sentiment + readability; engagement tips will be disabled gracefully.
+
+---
+
+## ▶️ Running the App
+
+```bash
+# Development
+flask --app app run --debug
+
+# or
+python app.py
+```
+
+Then open **[http://localhost:5000](http://localhost:5000)**.
+
+---
+
+
+
+## 🗂 Folder Structure
+
+```
+social-media-content-analyzer/
+├─ app.py
+├─ requirements.txt
+├─ .env.example
+├─ static/
+│  ├─ css/
+│  ├─ js/
+│  └─ assets/
+│     └─ demo.gif              
+├─ templates/
+│  └─ index.html
+├─ services/
+│  ├─ pdf_extractor.py
+│  ├─ ocr_extractor.py
+│  ├─ sentiment.py
+│  ├─ readability.py
+│  └─ engagement.py
+└─ tests/
+```
+
+---
+
+## 🔌 API Endpoints
+
+* `POST /analyze` — Upload file(s) and run analysis
+
+  * **Form fields**: `file` (PDF/PNG/JPG/JPEG)
+  * **Response** (JSON):
+
+    ```json
+    {
+      "sentiment": {"label": "POSITIVE", "score": 0.97},
+      "readability": {"flesch": 63.4, "smog": 7.2, "gunning_fog": 9.1},
+      "engagement": {
+        "headline": "…",
+        "caption": "…",
+        "hashtags": ["#ai", "#marketing"],
+        "cta": "…"
+      },
+      "meta": {"chars": 1240, "words": 216}
+    }
+    ```
+
+---
+
+## 🖼 Screens & Animations
+
+Add rich visuals to your README by committing assets to `static/assets/` and referencing them here.
+
+| View                                        | Description                                    |
+| ------------------------------------------- | ---------------------------------------------- |
+| ![Upload](static/assets/upload.png)         | Drag & drop with live validation               |
+| ![Results](static/assets/results.png)       | Sentiment + readability, with copy suggestions |
+
+**How to capture an animated GIF:**
+
+* Windows: \[ScreenToGif]
+* macOS: \[Kap]
+* Linux: \[peek]
+
+---
+
+## ✨ Add UI Micro-Animations
+
+Make the interface feel alive. Drop these into your CSS/JS to get subtle, delightful motion.
+
+**Pulse on drop zone** (`static/css/app.css`):
+
+```css
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, .5); }
+  70% { box-shadow: 0 0 0 12px rgba(0, 123, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+.dropzone.dragging { animation: pulse 1.4s ease-out infinite; }
+```
+
+**Progress shimmer** (`static/css/app.css`):
+
+```css
+.shimmer {
+  position: relative; overflow: hidden;
+}
+.shimmer::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+```
+
+**Fade-in results** (`templates/index.html`):
+
+```html
+<div id="results" class="opacity-0 transition-opacity" style="transition:opacity .4s ease"></div>
+<script>
+  function showResults(html){
+    const el = document.getElementById('results');
+    el.innerHTML = html; requestAnimationFrame(()=>{
+      el.classList.remove('opacity-0'); el.style.opacity = 1;
+    });
+  }
+</script>
+```
+
+> Prefer motion as feedback (drop, processing, results) rather than constant looping animations.
+
+---
+
+## 🔒 Security & Privacy
+
+* Files are processed **in-memory** where possible; avoid writing to disk.
+* Strip EXIF metadata from images before storage.
+* Do **not** log raw text by default; log only metrics.
+* Rate-limit uploads; validate MIME, extension, and size.
+* If deploying, set HTTPS and strong `SESSION_SECRET`.
+
+---
+
+## ⚙️ Performance Tips
+
+* Reuse **HF pipelines** and cache models on startup.
+* Downscale very large images before OCR.
+* Chunk long texts and **batch** requests to OpenAI.
+* Use a **worker queue** (Celery/RQ) for heavy jobs.
+
+---
+
+## 🧰 Troubleshooting
+
+* **Tesseract not found**: Ensure it’s installed and on `PATH`.
+* **OpenAI errors**: Missing/invalid key → tips disabled; check quotas.
+* **PDF extract empty**: Confirm the PDF contains selectable text (not just scans) or fall back to OCR.
+
+---
+
+## 🗺 Roadmap
+
+* [ ] Multi-file batch analysis
+* [ ] Chart.js visualizations of sentiment over time
+* [ ] Multi-language OCR and sentiment models
+* [ ] Export results (CSV/JSON/Markdown)
+* [ ] OAuth login for saved projects
+
+---
+
+## 🤝 Contributing
+
+PRs welcome! Please:
+
+1. Open an issue describing your change.
+2. Follow code style (`black`, `ruff`).
+3. Add tests where relevant.
+
+---
+
+---
+
+### 🙌 Acknowledgements
+
+* \[Flask] · \[PyMuPDF] · \[pytesseract] · \[Pillow] · \[transformers] · \[textstat] · \[OpenAI]
+
+> *“The best copy is clear, kind, and concise.”* Now let’s ship 🚀
