@@ -10,19 +10,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="row mb-5">
-            <div class="col-12 text-center">
-                <h1 class="display-4 mb-3 glow-text">
-                    <i class="fas fa-chart-line text-info me-3"></i>
-                    Social Media Content Analyzer
-                </h1>
-                <p class="lead text-muted">
-                    Upload your PDF documents or images to get AI-powered sentiment analysis, 
-                    readability scores, and engagement suggestions
-                </p>
-            </div>
-        </div>
+            <div class="row mb-5">
+       <div class="col-12 text-center">
+        <h1 class="display-4 mb-3 glow-text d-flex align-items-center justify-content-center">
+          <img src="static/assets/logo.png" alt="Logo" style="height:50px; margin-right:12px;">
+          <i class="fas fa-chart-line text-info me-3"></i>
+          Social Media Content Analyzer
+        </h1>
+        <p class="lead text-muted">
+          Upload your PDF documents or images to get AI-powered sentiment analysis, 
+          readability scores, and engagement suggestions
+        </p>
+      </div>
+    </div>
 
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
