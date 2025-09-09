@@ -197,54 +197,6 @@ Add rich visuals to your README by committing assets to `static/assets/` and ref
 * macOS: \[Kap]
 * Linux: \[peek]
 
----
-
-## ✨ Add UI Micro-Animations
-
-Make the interface feel alive. Drop these into your CSS/JS to get subtle, delightful motion.
-
-**Pulse on drop zone** (`static/css/app.css`):
-
-```css
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, .5); }
-  70% { box-shadow: 0 0 0 12px rgba(0, 123, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
-}
-.dropzone.dragging { animation: pulse 1.4s ease-out infinite; }
-```
-
-**Progress shimmer** (`static/css/app.css`):
-
-```css
-.shimmer {
-  position: relative; overflow: hidden;
-}
-.shimmer::after {
-  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
-  animation: shimmer 1.2s infinite;
-}
-@keyframes shimmer { 100% { transform: translateX(100%); } }
-```
-
-**Fade-in results** (`templates/index.html`):
-
-```html
-<div id="results" class="opacity-0 transition-opacity" style="transition:opacity .4s ease"></div>
-<script>
-  function showResults(html){
-    const el = document.getElementById('results');
-    el.innerHTML = html; requestAnimationFrame(()=>{
-      el.classList.remove('opacity-0'); el.style.opacity = 1;
-    });
-  }
-</script>
-```
-
-> Prefer motion as feedback (drop, processing, results) rather than constant looping animations.
-
----
 
 ## 🔒 Security & Privacy
 
