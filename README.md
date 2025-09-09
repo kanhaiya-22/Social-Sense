@@ -191,11 +191,6 @@ Add rich visuals to your README by committing assets to `static/assets/` and ref
 | ![Upload](static/assets/upload.png)         | Drag & drop with live validation               |
 | ![Results](static/assets/results.png)       | Sentiment + readability, with copy suggestions |
 
-**How to capture an animated GIF:**
-
-* Windows: \[ScreenToGif]
-* macOS: \[Kap]
-* Linux: \[peek]
 
 
 ## 🔒 Security & Privacy
