@@ -1,6 +1,10 @@
-# 🚀 Social Media Content Analyzer
+<p align="center">
+  <img src="static/assets/logo.png" alt="Logo" width="200"/>
+</p>
 
-*A Flask-based web app that extracts text from PDFs & images, runs AI-powered sentiment + readability analysis, and suggests engaging social copy.*
+
+
+*A Flask-based website that extracts text from PDFs & images, runs AI-powered sentiment + readability analysis, and suggests engaging social copy.*
 
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Inter&size=22&duration=2800&pause=900&center=true&vCenter=true&multiline=true&width=750&height=70&lines=Turn+raw+documents+into+ready-to-post+captions.;Sentiment.+Readability.+Engagement+tips.+Live." alt="animated typing">
