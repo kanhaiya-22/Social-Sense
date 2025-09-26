@@ -13,7 +13,6 @@
 <p align="center">
   <a href="https://img.shields.io/badge/Python-3.8%2B-blue"> <img src="https://img.shields.io/badge/Python-3.8%2B-blue"/></a>
   <a href="https://img.shields.io/badge/Flask-2.x-000"> <img src="https://img.shields.io/badge/Flask-2.x-000"/></a>
-  <a href="https://img.shields.io/badge/License-MIT-success"> <img src="https://img.shields.io/badge/License-MIT-success"/></a>
   <a href="https://img.shields.io/badge/Transformers-HF-orange"> <img src="https://img.shields.io/badge/Transformers-HF-orange"/></a>
   <a href="https://img.shields.io/badge/Textstat-Readability-9cf"> <img src="https://img.shields.io/badge/Textstat-Readability-9cf"/></a>
   <a href="https://img.shields.io/badge/OpenAI-Engagement%20Tips-4B9"> <img src="https://img.shields.io/badge/OpenAI-Engagement%20Tips-4B9"/></a>
@@ -188,7 +187,6 @@ social-media-content-analyzer/
 
 ## 🖼 Screens & Animations
 
-Add rich visuals to your README by committing assets to `static/assets/` and referencing them here.
 
 | View                                        | Description                                    |
 | ------------------------------------------- | ---------------------------------------------- |
