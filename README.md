@@ -6,6 +6,8 @@
 
 *A Flask-based website that extracts text from PDFs & images, runs AI-powered sentiment + readability analysis, and suggests engaging social copy.*
 
+Brief idea about the project (Drive Link) : https://drive.google.com/drive/folders/1U4SnAgvuv2qjafXo8GqtSvZDm5I5WlkV
+
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Inter&size=22&duration=2800&pause=900&center=true&vCenter=true&multiline=true&width=750&height=70&lines=Turn+raw+documents+into+ready-to-post+captions.;Sentiment.+Readability.+Engagement+tips.+Live." alt="animated typing">
 </p>
